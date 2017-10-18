@@ -88,6 +88,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="fsm.cs" />
     <Compile Include="GraphAreaExample.cs" />
     <Compile Include="GraphExample.cs" />
     <Compile Include="Program.cs" />

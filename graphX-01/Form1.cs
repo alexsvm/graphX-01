@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
@@ -97,6 +98,17 @@ namespace WindowsFormsProject
         private void but_reload_Click(object sender, EventArgs e)
         {
             _gArea.RelayoutGraph();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            List<fsm.State> states = new List<fsm.State>();
+            states.Add(new fsm.State(0, "q0"));
+            states.Add(new fsm.State(1, "q1"));
+            states.Add(new fsm.State(2, "q2"));
+            states.Add(new fsm.State(3, "q3"));
+            states.Add(new fsm.State(4, "q4"));
+            states[0].Link["x1"] = states[1];
         }
     }
 }
