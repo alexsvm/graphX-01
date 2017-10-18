@@ -14,10 +14,13 @@ namespace WindowsFormsProject
 {
     public partial class Form1 : Form
     {
+        List<fsm.State> states;
+
         public Form1()
         {
             InitializeComponent();
             Load += Form1_Load;
+            states = new List<fsm.State>();
         }
 
         void Form1_Load(object sender, EventArgs e)
@@ -102,13 +105,47 @@ namespace WindowsFormsProject
 
         private void button1_Click(object sender, EventArgs e)
         {
-            List<fsm.State> states = new List<fsm.State>();
             states.Add(new fsm.State(0, "q0"));
             states.Add(new fsm.State(1, "q1"));
             states.Add(new fsm.State(2, "q2"));
             states.Add(new fsm.State(3, "q3"));
             states.Add(new fsm.State(4, "q4"));
             states[0].Link["x1"] = states[1];
+            //string s = states.Find(x => x.Name.Contains("q3")).Name;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            states.Clear();
+            for (int i = 0; i < txtFSMTable.Lines.Count(); i ++)
+            {
+                string line = txtFSMTable.Lines[i];
+                string[] StateAndLinks = line.Split(':');
+                string StateName = StateAndLinks[0].Trim(' ');
+                fsm.State state = new fsm.State(i, StateName);
+                if (!states.Contains(state))
+                    states.Add(state);
+                if (StateAndLinks[1] != "") // Парсим переходы к другим состояниям
+                {
+                    foreach (string LinkPair in StateAndLinks[1].Split(','))
+                    {
+                        string[] SymAndDestState = LinkPair.Split('-');
+                        string Symbol = SymAndDestState[0].Trim(' ');
+                        string DestState = SymAndDestState[1].Trim(' ');
+                        fsm.State destState = states.Find(x => x.Name.Contains(DestState));
+                        if (destState != null)
+                            state.Link[Symbol] = destState;
+                        else if (DestState != "")
+                        {
+                            destState = new fsm.State(Convert.ToInt32(DestState[DestState.Count() - 1]), DestState);
+                            if (!states.Contains(destState))
+                                states.Add(destState);
+                            state.Link[Symbol] = destState;
+                        }
+                            
+                    }
+                }
+            }
         }
     }
 }

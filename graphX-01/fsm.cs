@@ -24,7 +24,7 @@ namespace fsm
         {
             Id = id;
             Name = name;
-            Link = new Dictionary<char, State>();
+            Link = new Dictionary<string, State>();
         }
         
         public override bool Equals(object obj)
@@ -77,9 +77,3 @@ namespace fsm
 
 }
 
-    class Link
-    {
-
-    }
-
-}
