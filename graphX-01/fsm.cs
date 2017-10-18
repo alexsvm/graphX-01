@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace fsm
 {
+    using Link = Dictionary<string, string>;
+
     class State : IEquatable<State>
     {
         public string Name { get; set; }
@@ -73,6 +75,19 @@ namespace fsm
         }
 
         public Dictionary<string, State> Link;
+    }
+
+    class test
+    {
+        List<string> states;
+        Dictionary<string, Link> links;
+
+        void test1()
+        {
+            states = new List<string>();
+            states.Add("q0");
+            states.Add("q1");
+        }
     }
 
 }
