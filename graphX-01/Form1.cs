@@ -12,6 +12,8 @@ using QuickGraph;
 
 namespace WindowsFormsProject
 {
+    using Link = Dictionary<string, string>;
+
     public partial class Form1 : Form
     {
         List<fsm.State> states;
@@ -73,22 +75,60 @@ namespace WindowsFormsProject
 
         private GraphExample GenerateGraph()
         {
-            //FOR DETAILED EXPLANATION please see SimpleGraph example project
+            var links = new Dictionary<string, Link>();
+            HashSet<string> hstates = new HashSet<string>();
+
+            hstates.Add("q0");
+            hstates.Add("q1");
+            hstates.Add("q2");
+            hstates.Add("q3");
+            hstates.Add("q3");
+            links.Add("q0", new Link());
+            links["q0"].Add("x1", "q1");
+            links["q0"].Add("x2", "q3");
+            links.Add("q1", new Link());
+            links["q1"].Add("x1", "q3");
+            links["q1"].Add("x3", "q2");
+            links.Add("q2", new Link());
+            links["q2"].Add("x1", "q3");
+
             var dataGraph = new GraphExample();
-            for (int i = 1; i < 10; i++)
+            foreach (string vs in hstates)
             {
-                var dataVertex = new DataVertex("q " + i);
+                var dataVertex = new DataVertex(vs);
                 dataGraph.AddVertex(dataVertex);
             }
             var vlist = dataGraph.Vertices.ToList();
+            DataEdge edge;
             //Then create two edges optionaly defining Text property to show who are connected
-            var dataEdge = new DataEdge(vlist[0], vlist[1]) { Text = string.Format("{0} -> {1}", vlist[0], vlist[1]) };
-            dataGraph.AddEdge(dataEdge);
-            dataEdge = new DataEdge(vlist[2], vlist[3]) { Text = string.Format("{0} -> {1}", vlist[2], vlist[3]) };
-            dataGraph.AddEdge(dataEdge);
-            dataEdge = new DataEdge(vlist[2], vlist[2]) { Text = string.Format("{0} -> {1}", vlist[2], vlist[2]) };
-            dataGraph.AddEdge(dataEdge);
+            foreach (string state in hstates)
+            {
+                if (links.ContainsKey(state))
+                    foreach (KeyValuePair<string, string> link in links[state])
+                    {
+                        var vA = vlist.Find(x => x.Text.Equals(state));
+                        var vB = vlist.Find(x => x.Text.Equals(link.Value));
+                        edge = new DataEdge(vA, vB) { Text = link.Key };
+                        dataGraph.AddEdge(edge);
+                    }
+            }
             return dataGraph;
+            //FOR DETAILED EXPLANATION please see SimpleGraph example project
+            //var dataGraph = new GraphExample();
+            //for (int i = 1; i < 10; i++)
+            //{
+            //    var dataVertex = new DataVertex("q " + i);
+            //    dataGraph.AddVertex(dataVertex);
+            //}
+            //var vlist = dataGraph.Vertices.ToList();
+            ////Then create two edges optionaly defining Text property to show who are connected
+            //var dataEdge = new DataEdge(vlist[0], vlist[1]) { Text = string.Format("{0} -> {1}", vlist[0], vlist[1]) };
+            //dataGraph.AddEdge(dataEdge);
+            //dataEdge = new DataEdge(vlist[2], vlist[3]) { Text = string.Format("{0} -> {1}", vlist[2], vlist[3]) };
+            //dataGraph.AddEdge(dataEdge);
+            //dataEdge = new DataEdge(vlist[2], vlist[2]) { Text = string.Format("{0} -> {1}", vlist[2], vlist[2]) };
+            //dataGraph.AddEdge(dataEdge);
+            //return dataGraph;
         }
 
         private void but_generate_Click(object sender, EventArgs e)
@@ -146,6 +186,48 @@ namespace WindowsFormsProject
                     }
                 }
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e) {
+            var links = new Dictionary<string, Link>();
+            HashSet<string> hstates = new HashSet<string>();
+
+            hstates.Add("q0");
+            hstates.Add("q1");
+            hstates.Add("q2");
+            hstates.Add("q3");
+            hstates.Add("q3");
+            links.Add("q0", new Link());
+            links["q0"].Add("x1", "q1");
+            links["q0"].Add("x2", "q3");
+            links.Add("q1", new Link());
+            links["q1"].Add("x1", "q3");
+            links["q1"].Add("x3", "q2");
+            links.Add("q2", new Link());
+            links["q2"].Add("x1", "q3");
+
+            var dataGraph = new GraphExample();
+            foreach (string vs in hstates)
+            {
+                var dataVertex = new DataVertex(vs);
+                dataGraph.AddVertex(dataVertex);
+            }
+            var vlist = dataGraph.Vertices.ToList();
+            DataEdge edge;
+            //Then create two edges optionaly defining Text property to show who are connected
+            foreach (string state in hstates)
+            {
+                if (links.ContainsKey(state))
+                    foreach (KeyValuePair<string, string> link in links[state])
+                    {
+                        var vA = vlist.Find(x => x.Text.Equals(state));
+                        var vB = vlist.Find(x => x.Text.Equals(link.Value));
+                        edge = new DataEdge(vA, vB) { Text = link.Key };
+                        dataGraph.AddEdge(edge);
+                    }
+            }
+            _gArea.LogicCore.Graph = dataGraph;
+            _gArea.RelayoutGraph();
         }
     }
 }

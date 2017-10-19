@@ -38,7 +38,7 @@
         <Style.Triggers>
             <Trigger Property="controls:HighlightBehaviour.Highlighted" Value="True">
                 <Setter Property="Background" Value="Gold"/>
-                <Setter Property="BorderThickness" Value="7"/>
+                <Setter Property="BorderThickness" Value="3"/>
             </Trigger>
         </Style.Triggers>
     </Style>
