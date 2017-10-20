@@ -10,6 +10,19 @@ using GraphX.Controls;
 using GraphX.Controls.Models;
 using QuickGraph;
 
+/*
+r0: x2-r5, x3-r1, x4-r3
+r1: x1-r2
+r2: x3-r3, x7-r3
+r3: x1-r10, x5-r4
+r4: x6-r10
+r5: x2-r9, x5-r6, x7-r6
+r6: x4-r7
+r7: x6-r8
+r8: x0-r10
+r9: x0-r8
+ */
+
 namespace WindowsFormsProject
 {
     using Link = Dictionary<string, string>;
@@ -41,7 +54,7 @@ namespace WindowsFormsProject
             var logic = new GXLogicCore<DataVertex, DataEdge, BidirectionalGraph<DataVertex, DataEdge>>();
             _gArea = new GraphAreaExample
             {
-               // EnableWinFormsHostingMode = false,
+                // EnableWinFormsHostingMode = false,
                 LogicCore = logic,
                 EdgeLabelFactory = new DefaultEdgelabelFactory()
             };
@@ -57,13 +70,13 @@ namespace WindowsFormsProject
             logic.DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.None;
             logic.AsyncAlgorithmCompute = false;
             _zoomctrl.Content = _gArea;
-            
+
             _gArea.SetVerticesMathShape(VertexShape.Triangle);
             _gArea.RelayoutFinished += gArea_RelayoutFinished;
 
-            
-           // var myResourceDictionary = new ResourceDictionary {Source = new Uri("Templates\\template.xaml", UriKind.Relative)};
-           // _zoomctrl.Resources.MergedDictionaries.Add(myResourceDictionary);
+
+            var myResourceDictionary = new ResourceDictionary {Source = new Uri("Templates\\template.xaml", UriKind.Relative)};
+            _zoomctrl.Resources.MergedDictionaries.Add(myResourceDictionary);
 
             return _zoomctrl;
         }
@@ -78,19 +91,27 @@ namespace WindowsFormsProject
             var links = new Dictionary<string, Link>();
             HashSet<string> hstates = new HashSet<string>();
 
-            hstates.Add("q0");
-            hstates.Add("q1");
-            hstates.Add("q2");
-            hstates.Add("q3");
-            hstates.Add("q3");
-            links.Add("q0", new Link());
-            links["q0"].Add("x1", "q1");
-            links["q0"].Add("x2", "q3");
-            links.Add("q1", new Link());
-            links["q1"].Add("x1", "q3");
-            links["q1"].Add("x3", "q2");
-            links.Add("q2", new Link());
-            links["q2"].Add("x1", "q3");
+            for (int i = 0; i <= 10; i++)
+            {
+                hstates.Add(string.Format("r{0}", i));
+                links.Add(string.Format("r{0}", i), new Link());
+            }
+            links["r0"].Add("x2", "r5");
+            links["r0"].Add("x3", "r1");
+            links["r0"].Add("x4", "r3");
+            links["r1"].Add("x1", "r2");
+            links["r2"].Add("x3", "r3");
+            links["r2"].Add("x7", "r3");
+            links["r3"].Add("x1", "r10");
+            links["r3"].Add("x5", "r4");
+            links["r4"].Add("x6", "r10");
+            links["r5"].Add("x2", "r9");
+            links["r5"].Add("x5", "r6");
+            links["r5"].Add("x7", "r6");
+            links["r6"].Add("x4", "r7");
+            links["r7"].Add("x6", "r8");
+            links["r8"].Add("x0", "r10");
+            links["r9"].Add("x0", "r8");
 
             var dataGraph = new GraphExample();
             foreach (string vs in hstates)
@@ -113,22 +134,6 @@ namespace WindowsFormsProject
                     }
             }
             return dataGraph;
-            //FOR DETAILED EXPLANATION please see SimpleGraph example project
-            //var dataGraph = new GraphExample();
-            //for (int i = 1; i < 10; i++)
-            //{
-            //    var dataVertex = new DataVertex("q " + i);
-            //    dataGraph.AddVertex(dataVertex);
-            //}
-            //var vlist = dataGraph.Vertices.ToList();
-            ////Then create two edges optionaly defining Text property to show who are connected
-            //var dataEdge = new DataEdge(vlist[0], vlist[1]) { Text = string.Format("{0} -> {1}", vlist[0], vlist[1]) };
-            //dataGraph.AddEdge(dataEdge);
-            //dataEdge = new DataEdge(vlist[2], vlist[3]) { Text = string.Format("{0} -> {1}", vlist[2], vlist[3]) };
-            //dataGraph.AddEdge(dataEdge);
-            //dataEdge = new DataEdge(vlist[2], vlist[2]) { Text = string.Format("{0} -> {1}", vlist[2], vlist[2]) };
-            //dataGraph.AddEdge(dataEdge);
-            //return dataGraph;
         }
 
         private void but_generate_Click(object sender, EventArgs e)
@@ -143,28 +148,19 @@ namespace WindowsFormsProject
             _gArea.RelayoutGraph();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e)
         {
-            states.Add(new fsm.State(0, "q0"));
-            states.Add(new fsm.State(1, "q1"));
-            states.Add(new fsm.State(2, "q2"));
-            states.Add(new fsm.State(3, "q3"));
-            states.Add(new fsm.State(4, "q4"));
-            states[0].Link["x1"] = states[1];
-            //string s = states.Find(x => x.Name.Contains("q3")).Name;
-        }
+            var links = new Dictionary<string, Link>();
+            var states = new HashSet<string>();
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            states.Clear();
-            for (int i = 0; i < txtFSMTable.Lines.Count(); i ++)
+            for (int i = 0; i < txtFSMTable.Lines.Count(); i++)
             {
                 string line = txtFSMTable.Lines[i];
                 string[] StateAndLinks = line.Split(':');
                 string StateName = StateAndLinks[0].Trim(' ');
-                fsm.State state = new fsm.State(i, StateName);
-                if (!states.Contains(state))
-                    states.Add(state);
+                states.Add(StateName);
+                links.Add(StateName, new Link());
+
                 if (StateAndLinks[1] != "") // Парсим переходы к другим состояниям
                 {
                     foreach (string LinkPair in StateAndLinks[1].Split(','))
@@ -172,42 +168,14 @@ namespace WindowsFormsProject
                         string[] SymAndDestState = LinkPair.Split('-');
                         string Symbol = SymAndDestState[0].Trim(' ');
                         string DestState = SymAndDestState[1].Trim(' ');
-                        fsm.State destState = states.Find(x => x.Name.Contains(DestState));
-                        if (destState != null)
-                            state.Link[Symbol] = destState;
-                        else if (DestState != "")
-                        {
-                            destState = new fsm.State(Convert.ToInt32(DestState[DestState.Count() - 1]), DestState);
-                            if (!states.Contains(destState))
-                                states.Add(destState);
-                            state.Link[Symbol] = destState;
-                        }
-                            
+                        states.Add(DestState);
+                        links[StateName].Add(Symbol, DestState);
                     }
                 }
+
             }
-        }
-
-        private void button3_Click(object sender, EventArgs e) {
-            var links = new Dictionary<string, Link>();
-            HashSet<string> hstates = new HashSet<string>();
-
-            hstates.Add("q0");
-            hstates.Add("q1");
-            hstates.Add("q2");
-            hstates.Add("q3");
-            hstates.Add("q3");
-            links.Add("q0", new Link());
-            links["q0"].Add("x1", "q1");
-            links["q0"].Add("x2", "q3");
-            links.Add("q1", new Link());
-            links["q1"].Add("x1", "q3");
-            links["q1"].Add("x3", "q2");
-            links.Add("q2", new Link());
-            links["q2"].Add("x1", "q3");
-
             var dataGraph = new GraphExample();
-            foreach (string vs in hstates)
+            foreach (string vs in states)
             {
                 var dataVertex = new DataVertex(vs);
                 dataGraph.AddVertex(dataVertex);
@@ -215,7 +183,7 @@ namespace WindowsFormsProject
             var vlist = dataGraph.Vertices.ToList();
             DataEdge edge;
             //Then create two edges optionaly defining Text property to show who are connected
-            foreach (string state in hstates)
+            foreach (string state in states)
             {
                 if (links.ContainsKey(state))
                     foreach (KeyValuePair<string, string> link in links[state])
@@ -227,7 +195,12 @@ namespace WindowsFormsProject
                     }
             }
             _gArea.LogicCore.Graph = dataGraph;
+            _gArea.GenerateGraph(true);
             _gArea.RelayoutGraph();
+            _gArea.SetVerticesDrag(true, true);
+            _zoomctrl.ZoomToFill();
         }
+
+
     }
 }
