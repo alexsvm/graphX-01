@@ -87,6 +87,9 @@ namespace fsm
             states = new List<string>();
             states.Add("q0");
             states.Add("q1");
+            states.Add("q2");
+
+            links["q0"]["x1"] = "q2";
         }
     }
 
