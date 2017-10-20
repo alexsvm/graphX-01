@@ -75,7 +75,8 @@ namespace WindowsFormsProject
             _gArea.RelayoutFinished += gArea_RelayoutFinished;
 
 
-            var myResourceDictionary = new ResourceDictionary {Source = new Uri("Templates\\template.xaml", UriKind.Relative)};
+            //var myResourceDictionary = new ResourceDictionary {Source = new Uri("Templates\\template.xaml", UriKind.Relative)};
+            var myResourceDictionary = new ResourceDictionary { Source = new Uri("Templates\\Mini\\CommonMiniTemplate.xaml", UriKind.Relative) };
             _zoomctrl.Resources.MergedDictionaries.Add(myResourceDictionary);
 
             return _zoomctrl;
