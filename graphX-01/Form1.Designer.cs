@@ -34,6 +34,9 @@
             this.but_reload = new System.Windows.Forms.Button();
             this.txtFSMTable = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
+            this.txtString = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // wpfHost
@@ -44,7 +47,7 @@
             this.wpfHost.BackColor = System.Drawing.Color.White;
             this.wpfHost.Location = new System.Drawing.Point(0, 0);
             this.wpfHost.Name = "wpfHost";
-            this.wpfHost.Size = new System.Drawing.Size(812, 468);
+            this.wpfHost.Size = new System.Drawing.Size(812, 448);
             this.wpfHost.TabIndex = 0;
             this.wpfHost.Text = "elementHost1";
             this.wpfHost.Child = null;
@@ -73,31 +76,66 @@
             // 
             // txtFSMTable
             // 
+            this.txtFSMTable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txtFSMTable.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtFSMTable.Location = new System.Drawing.Point(12, 474);
+            this.txtFSMTable.Location = new System.Drawing.Point(12, 454);
             this.txtFSMTable.Multiline = true;
             this.txtFSMTable.Name = "txtFSMTable";
             this.txtFSMTable.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtFSMTable.Size = new System.Drawing.Size(252, 178);
+            this.txtFSMTable.Size = new System.Drawing.Size(252, 198);
             this.txtFSMTable.TabIndex = 4;
             this.txtFSMTable.Text = "r0: x2-r5, x3-r1, x4-r3\r\nr1: x1-r2\r\nr2: x3-r3, x7-r3\r\nr3: x1-r10, x5-r4\r\nr4: x6-r" +
-    "10\r\nr5: x2-r9, x5-r6, x7-r6\r\nr6: x4-r7\r\nr7: x6-r8\r\nr8: x0-r10\r\nr9: x0-r8";
+    "10, x0-r0\r\nr5: x2-r9, x5-r6, x7-r6\r\nr6: x4-r7\r\nr7: x6-r8\r\nr8: x0-r10\r\nr9: x0-r8\r" +
+    "\nr10:";
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(270, 474);
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button4.Location = new System.Drawing.Point(270, 454);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(87, 24);
+            this.button4.Size = new System.Drawing.Size(148, 24);
             this.button4.TabIndex = 7;
-            this.button4.Text = "parse2";
+            this.button4.Text = "parse rules";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // txtString
+            // 
+            this.txtString.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtString.Location = new System.Drawing.Point(459, 458);
+            this.txtString.Name = "txtString";
+            this.txtString.Size = new System.Drawing.Size(210, 20);
+            this.txtString.TabIndex = 8;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.Location = new System.Drawing.Point(675, 458);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(117, 24);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Parse string...";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // txtLog
+            // 
+            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtLog.Location = new System.Drawing.Point(459, 495);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtLog.Size = new System.Drawing.Size(333, 157);
+            this.txtLog.TabIndex = 10;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(895, 664);
+            this.Controls.Add(this.txtLog);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.txtString);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.txtFSMTable);
             this.Controls.Add(this.but_reload);
@@ -120,6 +158,9 @@
         private System.Windows.Forms.Button but_reload;
         private System.Windows.Forms.TextBox txtFSMTable;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox txtString;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox txtLog;
     }
 }
 

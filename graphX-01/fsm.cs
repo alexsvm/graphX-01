@@ -8,6 +8,39 @@ namespace fsm
 {
     using Link = Dictionary<string, string>;
 
+    /// <summary>
+    /// class Parser here....
+    /// </summary>
+    class Parser
+    {
+        private HashSet<string> states;
+        private Dictionary<string, Link> links;
+        private string initialState;
+        private string finalState;
+
+        public Parser(HashSet<string> States, Dictionary<string, Link> Links, string InitialState, string FinalState) {
+            states = States;
+            links = Links;
+            initialState = InitialState;
+            finalState = FinalState;
+        }
+
+        public bool ParseString(string Str) {
+            string currState = initialState;
+            foreach (char C in Str) {
+                if (C == 'x') continue;
+                if (links[currState].ContainsKey(C.ToString()))
+                    currState = links[currState][C.ToString()];
+                else
+                    return false;
+             }
+            return currState == finalState ? true : false;
+        }
+    }
+
+    /// <summary>
+    /// ///////
+    /// </summary>
     class State : IEquatable<State>
     {
         public string Name { get; set; }
@@ -77,21 +110,6 @@ namespace fsm
         public Dictionary<string, State> Link;
     }
 
-    class test
-    {
-        List<string> states;
-        Dictionary<string, Link> links;
-
-        void test1()
-        {
-            states = new List<string>();
-            states.Add("q0");
-            states.Add("q1");
-            states.Add("q2");
-
-            links["q0"]["x1"] = "q2";
-        }
-    }
-
+    
 }
 

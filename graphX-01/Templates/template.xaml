@@ -5,7 +5,7 @@
 
     <!-- VERTEX CONTROL -->
     <Style TargetType="{x:Type controls:VertexControl}">
-        <Setter Property="Background" Value="#FFE3E3E3"/>
+        <Setter Property="Background" Value="#90E3E3E3"/>
         <Setter Property="BorderThickness" Value="5,3,5,3"/>
         <Setter Property="Padding" Value="10,5,10,5"/>
         <Setter Property="BorderBrush" Value="#FF393939"/>
@@ -50,12 +50,25 @@
                 <ControlTemplate TargetType="{x:Type controls:EdgeControl}">
                     <Grid>
                         <Path Stroke="{TemplateBinding Foreground}"
-                          StrokeThickness="2" MinWidth="1" MinHeight="1"
-                          ToolTip="{TemplateBinding ToolTip}" 
-                            x:Name="PART_edgePath"/>
-                        <controls:DefaultEdgePointer NeedRotation="true" x:Name="PART_EdgePointerForTarget" >
-                            <Path Data="M0,0.5 L1,1 1,0" Fill="Black" Stretch="Uniform" Width="10" Height="10"/>
+                              StrokeThickness="2" 
+                              MinWidth="1" MinHeight="1"
+                              ToolTip="{TemplateBinding ToolTip}" 
+                              x:Name="PART_edgePath"/>
+                        <controls:DefaultEdgePointer x:Name="PART_EdgePointerForTarget" NeedRotation="true">
+                            <Path Width="15"
+                                  Height="15"
+                                  Data="M0,0.5 L1,1 1,0"
+                                  Fill="Black"
+                                  Stretch="Uniform" />
                         </controls:DefaultEdgePointer>
+                        <Path x:Name="PART_SelfLoopedEdge"
+                              Width="10"
+                              Height="10"
+                              Data="F1 M 17.4167,32.25L 32.9107,32.25L 38,18L 43.0893,32.25L 58.5833,32.25L 45.6798,41.4944L 51.4583,56L 38,48.0833L 26.125,56L 30.5979,41.7104L 17.4167,32.25 Z "
+                              Fill="Black"
+                              IsHitTestVisible="True"
+                              Stretch="Uniform"
+                              ToolTip="This vertex has some self looped edges!" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

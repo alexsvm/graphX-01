@@ -29,13 +29,14 @@ namespace WindowsFormsProject
 
     public partial class Form1 : Form
     {
-        List<fsm.State> states;
+        //List<fsm.State> states;
+        fsm.Parser parser;
 
         public Form1()
         {
             InitializeComponent();
             Load += Form1_Load;
-            states = new List<fsm.State>();
+            //states = new List<fsm.State>();
         }
 
         void Form1_Load(object sender, EventArgs e)
@@ -59,6 +60,7 @@ namespace WindowsFormsProject
                 EdgeLabelFactory = new DefaultEdgelabelFactory()
             };
             _gArea.ShowAllEdgesLabels(true);
+            _gArea.ShowAllEdgesArrows(true);
             logic.Graph = GenerateGraph();
             logic.DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.LinLog;
             logic.DefaultLayoutAlgorithmParams = logic.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.LinLog);
@@ -75,9 +77,10 @@ namespace WindowsFormsProject
             _gArea.RelayoutFinished += gArea_RelayoutFinished;
 
 
-            //var myResourceDictionary = new ResourceDictionary {Source = new Uri("Templates\\template.xaml", UriKind.Relative)};
-            var myResourceDictionary = new ResourceDictionary { Source = new Uri("Templates\\Mini\\CommonMiniTemplate.xaml", UriKind.Relative) };
+            var myResourceDictionary = new ResourceDictionary {Source = new Uri("Templates\\template.xaml", UriKind.Relative)};
+            //var myResourceDictionary = new ResourceDictionary { Source = new Uri("Templates\\Mini\\CommonMiniTemplate.xaml", UriKind.Relative) };
             _zoomctrl.Resources.MergedDictionaries.Add(myResourceDictionary);
+            _gArea.ShowAllEdgesArrows(true);
 
             return _zoomctrl;
         }
@@ -106,6 +109,7 @@ namespace WindowsFormsProject
             links["r3"].Add("x1", "r10");
             links["r3"].Add("x5", "r4");
             links["r4"].Add("x6", "r10");
+            links["r4"].Add("x0", "r0");
             links["r5"].Add("x2", "r9");
             links["r5"].Add("x5", "r6");
             links["r5"].Add("x7", "r6");
@@ -131,6 +135,7 @@ namespace WindowsFormsProject
                         var vA = vlist.Find(x => x.Text.Equals(state));
                         var vB = vlist.Find(x => x.Text.Equals(link.Value));
                         edge = new DataEdge(vA, vB) { Text = link.Key };
+                        
                         dataGraph.AddEdge(edge);
                     }
             }
@@ -153,13 +158,18 @@ namespace WindowsFormsProject
         {
             var links = new Dictionary<string, Link>();
             var states = new HashSet<string>();
-
+            string initState = "";
+            string finalState = "";
             for (int i = 0; i < txtFSMTable.Lines.Count(); i++)
             {
                 string line = txtFSMTable.Lines[i];
                 string[] StateAndLinks = line.Split(':');
                 string StateName = StateAndLinks[0].Trim(' ');
                 states.Add(StateName);
+                if (i == 0)
+                    initState = StateName;
+                if (i == txtFSMTable.Lines.Count() - 1)
+                    finalState = StateName;
                 links.Add(StateName, new Link());
 
                 if (StateAndLinks[1] != "") // Парсим переходы к другим состояниям
@@ -167,7 +177,7 @@ namespace WindowsFormsProject
                     foreach (string LinkPair in StateAndLinks[1].Split(','))
                     {
                         string[] SymAndDestState = LinkPair.Split('-');
-                        string Symbol = SymAndDestState[0].Trim(' ');
+                        string Symbol = SymAndDestState[0].Trim(' ').Substring(1); //.Substring(1);
                         string DestState = SymAndDestState[1].Trim(' ');
                         states.Add(DestState);
                         links[StateName].Add(Symbol, DestState);
@@ -175,6 +185,7 @@ namespace WindowsFormsProject
                 }
 
             }
+            parser = new fsm.Parser(states, links, initState, finalState);
             var dataGraph = new GraphExample();
             foreach (string vs in states)
             {
@@ -202,6 +213,14 @@ namespace WindowsFormsProject
             _zoomctrl.ZoomToFill();
         }
 
-
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (parser == null)
+                return;
+            if (parser.ParseString(txtString.Text))
+                txtLog.Text += string.Format("Строка '{0}' соответсвует правилам.", txtString.Text) + Environment.NewLine;
+            else
+                txtLog.Text += string.Format("Строка '{0}' не соответсвует правилам!", txtString.Text) + Environment.NewLine;
+        }
     }
 }
