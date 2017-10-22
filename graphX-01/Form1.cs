@@ -218,9 +218,9 @@ namespace WindowsFormsProject
             if (parser == null)
                 return;
             if (parser.ParseString(txtString.Text))
-                txtLog.Text += string.Format("Строка '{0}' соответсвует правилам.", txtString.Text) + Environment.NewLine;
+                txtLog.Text += string.Format("Строка '{0}' соответствует правилам.", txtString.Text) + Environment.NewLine;
             else
-                txtLog.Text += string.Format("Строка '{0}' не соответсвует правилам!", txtString.Text) + Environment.NewLine;
+                txtLog.Text += string.Format("Строка '{0}' не соответствует правилам!", txtString.Text) + Environment.NewLine;
         }
     }
 }

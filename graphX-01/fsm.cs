@@ -9,14 +9,14 @@ namespace fsm
     using Link = Dictionary<string, string>;
 
     /// <summary>
-    /// class Parser here....
+    /// Класс, реализующий конечный автомат для распознования цепочки символов
     /// </summary>
     class Parser
     {
-        private HashSet<string> states;
-        private Dictionary<string, Link> links;
-        private string initialState;
-        private string finalState;
+        private HashSet<string> states;         // Множество состояний
+        private Dictionary<string, Link> links; // Словарь переходов из состояния ri в состояние rj по символу xk
+        private string initialState;            // ИД начального состояния
+        private string finalState;              // ИД конечного состояния
 
         public Parser(HashSet<string> States, Dictionary<string, Link> Links, string InitialState, string FinalState) {
             states = States;
@@ -25,16 +25,21 @@ namespace fsm
             finalState = FinalState;
         }
 
+        /// <summary>
+        /// ParseString - функция, проверяющая строку Str на соответсвие правилам
+        /// </summary>
+        /// <param name="Str"> Строка для распознования ... </param>
+        /// <returns> Если строка соответствует правилат, то true, иначе false </returns>
         public bool ParseString(string Str) {
             string currState = initialState;
-            foreach (char C in Str) {
-                if (C == 'x') continue;
-                if (links[currState].ContainsKey(C.ToString()))
-                    currState = links[currState][C.ToString()];
-                else
-                    return false;
+            foreach (char C in Str) { // Перебираем все символы в строке
+                if (links[currState].ContainsKey(C.ToString())) // Если из текущего состояния по ткущему символу есть 
+                    currState = links[currState][C.ToString()]; // переход в другое состояние, то переходим туда,
+                else                                            // если нет, то цепочка не соответствует правилам:
+                    return false;                               // выходим в результатом false
              }
-            return currState == finalState ? true : false;
+            // Если после завершения перебора символов мы оказались в конечном состояниия, то цепочка верная,
+            return currState == finalState ? true : false;      // если нет - цепочка не соответствует правилам
         }
     }
 
