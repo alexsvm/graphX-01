@@ -29,7 +29,7 @@ namespace fsm
         /// ParseString - функция, проверяющая строку Str на соответсвие правилам
         /// </summary>
         /// <param name="Str"> Строка для распознования ... </param>
-        /// <returns> Если строка соответствует правилат, то true, иначе false </returns>
+        /// <returns> Если строка соответствует правилам, то true, иначе false </returns>
         public bool ParseString(string Str) {
             string currState = initialState;
             foreach (char C in Str) { // Перебираем все символы в строке
