@@ -33,7 +33,7 @@
         <Setter Property="controls:DragBehaviour.IsDragEnabled"
                 Value="True" />
 
-        <Setter Property="controls:HighlightBehaviour.IsHighlightEnabled" Value="False"/>
+        <Setter Property="controls:HighlightBehaviour.IsHighlightEnabled" Value="True"/>
 
         <Style.Triggers>
             <Trigger Property="controls:HighlightBehaviour.Highlighted" Value="True">
@@ -85,7 +85,7 @@
         <Setter Property="Opacity"
                 Value="1" />
 
-        <Setter Property="controls:HighlightBehaviour.IsHighlightEnabled" Value="False"/>
+        <Setter Property="controls:HighlightBehaviour.IsHighlightEnabled" Value="True"/>
 
 
         <Style.Triggers>

@@ -222,5 +222,19 @@ namespace WindowsFormsProject
             else
                 txtLog.Text += string.Format("Строка '{0}' не соответствует правилам!", txtString.Text) + Environment.NewLine;
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            foreach (VertexControl vc in _gArea.VertexList.Values)
+            {
+                DataVertex dv = vc.GetDataVertex<DataVertex>();
+                if (dv.Text == "q10")
+                {
+                    var fg = vc.Foreground;
+                    fg.Opacity = 1.0;
+                }
+                
+            }
+        }
     }
 }
